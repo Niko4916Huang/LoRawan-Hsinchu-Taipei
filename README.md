@@ -15,3 +15,7 @@
     此問題尚未解決。<br/>
 
 3. Middleware_UART.py 不論 console板或是 GUI版，都需要使用 UART 與Gateway UART1 連接，以傳送命令。
+
+## Wilson fixed Middleware_UART.py let OTAA workable<br/>
+1. 在 目錄："Wilson_OTAA"， 有修正的 Middleware_twoway.py 及 OTAA測試成功的 log檔案。<br/>
+2. RF_FREQ = 903.9		#// w:915.2， 經測試，915.2也可以 OTAA 成功。<br/>
