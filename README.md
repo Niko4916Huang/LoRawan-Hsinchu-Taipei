@@ -19,3 +19,8 @@
 ## Wilson fixed Middleware_UART.py let OTAA workable<br/>
 1. 在 目錄："Wilson_OTAA"， 有修正的 Middleware_twoway.py 及 OTAA測試成功的 log檔案。<br/>
 2. RF_FREQ = 903.9		#// w:915.2， 經測試，915.2也可以 OTAA 成功。<br/>
+
+## 20260213_Twoway_amp<br/>
+增加 amp data request command<br/>
+使用 Wilson's Middleware_twoway.py ， 增加 amp data request command 向Transponder 要AMP 的訊息。<br/>
+同時 在server端常駐mqtt_chirpstack_sub.c 守聽MQTT上傳的data。<br/>
