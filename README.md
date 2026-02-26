@@ -24,3 +24,8 @@
 增加 amp data request command<br/>
 使用 Wilson's Middleware_twoway.py ， 增加 amp data request command 向Transponder 要AMP 的訊息。<br/>
 同時 在server端常駐mqtt_chirpstack_sub.c 守聽MQTT上傳的data。<br/>
+
+## 20260226_Twoway_amp_Sqlite<br/>
+修改成： amp 第幾個指令的 request command<br/>
+amp 指令: 01 ~ 09<br/>
+同時 在server端常駐mqtt_chirpstack_sqlite.c 守聽MQTT上傳的data，並存入SQL資料庫中，以供後續讀取用。<br/>
