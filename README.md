@@ -29,3 +29,15 @@
 修改成： amp 第幾個指令的 request command<br/>
 amp 指令: 01 ~ 09<br/>
 同時 在server端常駐mqtt_chirpstack_sqlite.c 守聽MQTT上傳的data，並存入SQL資料庫中，以供後續讀取用。<br/>
+
+## 20260313_Twoway_UDP_amp_Sqlite<br/>
+修改成： UDP上行及下行流程<br/>
+chirpStack <- `UDP:1700` -> Middleware.py <- `UDP:5001` -> Gateway <- `FSK` -> Transponder <- `UART` -> AMP<br/>
+1.	OTAA及 Healthy check的功能，目前還必須是由Middleware.py手動指令輸入來發起。<br/>
+	OTAA： trigger B2A105D07ED5B370<br/>
+	Healthy check：poll 0008deb0 189c883dd408d15f25048f2783845365 fa3439926c42af5a3cabdbdda602a7be 0<br/>
+2.	OTAA及 Healthy check成功後，就可以由chirpStack 的queue 發出AMP #的呼叫指令。<br/>
+3.	目前Middleware.py 指向的Gateway IP是寫死在程式內，用UDP：5001溝通。<br/>
+    Gateway 改用UDP方式，接收port:5001 的方式，與Middleware.py 溝通。<br/>
+    Transponder 內修正處理AMP #的回覆。<br/>
+
