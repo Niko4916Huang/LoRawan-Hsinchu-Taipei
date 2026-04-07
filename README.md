@@ -44,3 +44,17 @@ chirpStack <- `UDP:1700` -> Middleware.py <- `UDP:5001` -> Gateway <- `FSK` -> T
    增加 Transponder 處理從chirpStack queue發出的HealthyCheck封包。<br/>
    HealthyCheck封包從Middleware發出，會自動增加到240bytes，而從chirpStack queue發出的封包，是沒有那麼長的。<br/>
    因此，需要不同的處理方式。<br/>
+## 20260401_ACI4台_樣品完成<br/>
+1. 目前Transponder頻率參數設定固定為： <br/>
+		Tx： 204.1MHz<br/>
+		Rx： 257.1MHz<br/>
+2.  gateway 將 UDP 和 RF-Rx 分開<br/>
+	// 1. Check UDP Input<br/>
+		收到UDP封包，傳到 RF-Tx就離開<br/>
+	// 2. Check RF - Rx Input<br/>
+		守聽RF-Rx 看是否有封包傳來，若有，用UDP傳出。<br/>
+3. Transponder Power ON， 自動送出OTAA request，不需要Middleware.py發起。<br/>
+4. 一旦OTAA成功，接著發出Healthy Check，用AMP#1,及AMP#2，間隔10秒發送。<br/>
+   之後，發AMP#3，每120秒。<br/>
+5. 可由 server端對AMP 下達 set 的指令，或是 讀取data 的指令。<br/>
+
