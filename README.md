@@ -40,4 +40,7 @@ chirpStack <- `UDP:1700` -> Middleware.py <- `UDP:5001` -> Gateway <- `FSK` -> T
 3.	目前Middleware.py 指向的Gateway IP是寫死在程式內，用UDP：5001溝通。<br/>
     Gateway 改用UDP方式，接收port:5001 的方式，與Middleware.py 溝通。<br/>
     Transponder 內修正處理AMP #的回覆。<br/>
-
+## 20260316_Transponder_UDP_V1.1<br/>
+   增加 Transponder 處理從chirpStack queue發出的HealthyCheck封包。<br/>
+   HealthyCheck封包從Middleware發出，會自動增加到240bytes，而從chirpStack queue發出的封包，是沒有那麼長的。<br/>
+   因此，需要不同的處理方式。<br/>
