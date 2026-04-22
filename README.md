@@ -57,4 +57,28 @@ chirpStack <- `UDP:1700` -> Middleware.py <- `UDP:5001` -> Gateway <- `FSK` -> T
 4. 一旦OTAA成功，接著發出Healthy Check，用AMP#1,及AMP#2，間隔10秒發送。<br/>
    之後，發AMP#3，每120秒。<br/>
 5. 可由 server端對AMP 下達 set 的指令，或是 讀取data 的指令。<br/>
+## 20260422_解決Gateway在NAT後面時，與外網chirpStack的UDP連接方式<br/>
+1. 解決Gateway在NAT後面時，與外網chirpStack network server的UDP連接方式。<br/>
+   方法：在gateway 增加 對Middleware.py 每5秒發 PULLDATA 功能。<br/>
+2. gateway 修改，守聽 RF – Rx，<br/>
+	RX 讀取時，設定Rx_IsReading = true; 讀完設回false。<br/>
+	需要 TX時，設為 RF-TX mode，傳完設回RF-RX mode。<br/>
+3. Middleware.py接收端的問題修正<br/>
+	在gateway 增加 對Middleware.py 發pulldata & pushdata 功能，造成<br/>
+	UDP封包只傳一次，Middleware.py就收不到了。<br/>
+4. gateway功能修正<br/>
+	1. 將對口的Server IP 及 port，存入EEPROM內，開機時取出。<br/>
+	2. 建立AT command from UART1，使用此來更改存入的值。<br/>
+		Command List:<br/>
+		    1. 基本測試       ：  AT<br/>
+		    2. 顯示目前的設定  ： AT+SERVER?<br/>
+		    3. 設定 (IP, Port)： AT+SERVER=192.168.50.206,5001  <br/>
+5. Middleware功能修正<br/>
+ 1. SERVER_IP = "127.0.0.1" 設定為與chirpstack 在同一IP address。<br/>
+ 2. 記錄 gateway address & port，UDP封包從哪來，回哪去。解決 gateway 在NAT的後面。<br/>
+        data, GWaddr = self.sock_gw.recvfrom(4096)<br/>
+     self.gateways.add(GWaddr)<br/>
+ 3. 將 gateway傳來的 --- PULL_DATA --- 封包，送到chirpstack <br/>
+    if identifier == 0x02:<br/>
+    	self.log(f"PULL_DATA from {GWaddr}, send to chirpstack", C_YELLOW) <br/>
 
